@@ -218,9 +218,7 @@ class app:
         self.window.geometry("1445x813")
         self.window.configure(bg="#053B50")
         self.OUTPUT_PATH = Path(__file__).parent
-        self.ASSETS_PATH = self.OUTPUT_PATH / Path(
-            r"C:\Users\krish\OneDrive\UseFullPrograms\Toolkit\Test GUI\build\assets\hashingtab"
-        )
+        self.ASSETS_PATH = self.OUTPUT_PATH / Path(r"./assets")
 
         self.build_Menu()
 
@@ -273,9 +271,7 @@ class app:
             self.build_Fcrypt()
 
     def build_Menu(self):
-        self.ASSETS_PATH = self.OUTPUT_PATH / Path(
-            r"C:\Users\krish\OneDrive\UseFullPrograms\Toolkit\GUI\build\assets\menu_tab"
-        )
+        self.ASSETS_PATH = self.OUTPUT_PATH / Path(r"./assets/menu_panel")
 
         canvas = Canvas(
             self.window,
@@ -350,7 +346,7 @@ class app:
 
     def build_Hash(self):
         self.ASSETS_PATH = self.OUTPUT_PATH / Path(
-            r"C:\Users\krish\OneDrive\UseFullPrograms\Toolkit\GUI\build\assets\hashing_tab"
+            r"./assets/hashing_panel"
         )
 
         canvas = Canvas(
@@ -664,7 +660,7 @@ class app:
 
     def build_String(self):
         self.ASSETS_PATH = self.OUTPUT_PATH / Path(
-            r"C:\Users\krish\OneDrive\UseFullPrograms\Toolkit\GUI\build\assets\strings"
+            r"./assets/strings_panel"
         )
         canvas = Canvas(
             self.window,
@@ -952,7 +948,6 @@ class app:
             ),
         )
 
-
         image_image_6 = PhotoImage(file=self.relative_to_assets("image_6.png"))
         image_6 = canvas.create_image(308.0, 213.0, image=image_image_6)
 
@@ -960,7 +955,6 @@ class app:
         image_7 = canvas.create_image(
             307.4228210449219, 603.9876098632812, image=image_image_7
         )
-
 
         # Similar Text
         canvas.create_text(
@@ -1111,7 +1105,7 @@ class app:
 
     def build_Fcrypt(self):
         self.ASSETS_PATH = self.OUTPUT_PATH / Path(
-            r"C:\Users\krish\OneDrive\UseFullPrograms\Toolkit\GUI\build\assets\fcrypt"
+            r"./assets/fcrypt_panel"
         )
         canvas = Canvas(
             self.window,
