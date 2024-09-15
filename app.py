@@ -1139,6 +1139,14 @@ class app:
         image_image_4 = PhotoImage(file=self.relative_to_assets("image_4.png"))
         image_4 = canvas.create_image(722.0, 568.0, image=image_image_4)
 
+        # Entrie Variables
+
+        entry_1_var = StringVar(self.window)
+        entry_2_var = StringVar(self.window, "Hi Howe are you")
+
+
+
+
         entry_image_1 = PhotoImage(file=self.relative_to_assets("entry_1.png"))
         entry_bg_1 = canvas.create_image(
             722.353271484375, 513.7057952880859, image=entry_image_1
@@ -1149,12 +1157,15 @@ class app:
             fg="#EEEEEE",
             highlightthickness=0,
             font=("JetBrains Mono", 16 * -1, "bold"),
+            textvariable=entry_1_var
+
         )
         entry_1.place(
             x=310.0,
             y=501.38848876953125,
             width=824.70654296875,
             height=22.634613037109375,
+            
         )
 
         entry_image_2 = PhotoImage(file=self.relative_to_assets("entry_2.png"))
@@ -1167,12 +1178,14 @@ class app:
             fg="#EEEEEE",
             highlightthickness=0,
             font=("JetBrains Mono", 16 * -1, "bold"),
+            textvariable=entry_2_var
         )
         entry_2.place(
             x=310.0,
             y=555.3845825195312,
             width=824.70654296875,
             height=22.634613037109375,
+
         )
 
         button_image_1 = PhotoImage(file=self.relative_to_assets("button_1.png"))
@@ -1214,6 +1227,22 @@ class app:
             relief="flat",
         )
         button_4.place(x=613.0, y=681.0, width=220.0, height=75.0)
+
+                
+        select_file_button_image = PhotoImage(file=self.relative_to_assets("select_file_button.png"))
+        select_file_button = Button(
+            image=select_file_button_image,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: print("select_file_button clicked"),
+            relief="flat"
+        )
+        select_file_button.place(
+            x=1009.0,
+            y=546.0,
+            width=158.0,
+            height=44.0
+        )
 
         canvas.create_text(
             521.0,
