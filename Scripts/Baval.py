@@ -6,10 +6,40 @@ import typing
 import binascii
 from time import time
 class bvl(f):
+    """
+    \nThis is a wrapper class for the Fernet Class in cryptography package
+    \nIt provides a simple way to encrypt and decrypt data or files
+    \n
+    \n## Example Usage
+    \n
+    \nTo Use this class, you will need to create an object of the class and then use the methods of the class
+    \n
+    \nExample:
+    ```
+    # Initalize the class
+    bvl = bvl(bvl.generate_key(type))
+    
+    # To encrypt a file
+    bvl.encrypt_file(path)
+    
+    # To decrypt a file
+    bvl.decrypt_file(path)
+    ```
+    \n## Features:
+    \n\t- Encrypts and Decrypts data or files
+    \n\t- Has a simple API
+    \n\t- Can be used with the default key or a custom key
+    \n\t- Can be used to encrypt or decrypt data or files
+
+    \n\n## Methods:
+    \n\t- encrypt(data) : Encrypts data with the key
+    \n\t- decrypt(data) : Decrypts data with the key
+    \n\t- encrypt_file(path,save_key=False) : Encrypts a file and returns the encryption key
+    \n\t- decrypt_file(path) : Decrypts a file and returns the decryption key
+    """
     def __init__(
         self,
         key: typing.Union[bytes, str],
-        backend: typing.Any = None,
     ) -> None:
         self.key = key
         try:
@@ -23,11 +53,8 @@ class bvl(f):
                 "bvl key must be a 32,64 bit key url-safe base64-encoded bytes."
             )
 
-        
         self._signing_key = key[:int(len(key)/2)]
         self._encryption_key = key[int(len(key)/2):]
-
-
 
     def encrypt_file(self,path:str,save_key=False) -> None:
         """
@@ -52,7 +79,6 @@ class bvl(f):
             encrypted_file.write(encrypted_data)
 
         return time() - s_time
-    
 
     def decrypt_file(self,path:str) -> str:
         """
@@ -78,17 +104,22 @@ class bvl(f):
             original_file.write(original_data)
 
         return time() - s_time
-    
-    
+
     @classmethod
-    def generate_key(cls,bites = 128) -> bytes:
+    def generate_key(cls,bites = 256) -> bytes:
         """
-        \nYou can generate a key of as many bits as you like
-        \nThe default bits are set to 64
-        \n# NOTE
-        \n##### To encrypt or decrypt data or file, this class uses utmost 512 bit key 
-        \n##### so createing a key that's beyond that is not necessary !!
+        Generates a key of given bits
+        Args:
+            bites (int): The number of bits for the key, Defaults to 256
+        Returns:
+            bytes: The generated key
+
+        Important:
+        **To encrypt or decrypt data or file, this class uses utmost 512 bit key**
+        **so createing a key that's beyond that is not necessary !!**
+
         """
+
         byte = int(bites/8)
 
         return base64.urlsafe_b64encode(os.urandom(byte))
@@ -96,4 +127,4 @@ class bvl(f):
     def get_key(self):
         return self.key
 
-
+test = bvl(bvl.generate_key())

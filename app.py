@@ -16,7 +16,8 @@ from Scripts.Hash import hash
 ToDo:
 
 
-Add functionality to the button of file Hashing
+Add Select File button in Hash Panel
+Update the 64 bit and 128 bit keys button to 256 and 512 bit respectively
 """
 
 
@@ -107,7 +108,7 @@ hex_to_str_value = ""
 hex_to_int_value = ""
 
 
-def hex_conversion(Canvas, text: str):
+def hex_conversion(Canvas, text: str) -> None:
     """
     This fucntion is to use with the **Strings Panel** it takes the present canvas and the hex text
     present in the hex_conversion_entry and updates the following value you see on Strings Panel :
@@ -151,7 +152,7 @@ def hex_conversion(Canvas, text: str):
     Canvas.itemconfig("hextostr", text=Str_text)
 
 
-def str_conversion(Canvas, text: str):
+def str_conversion(Canvas, text: str) -> None:
     """
     This fucntion is to use with the **Strings Panel** it takes the present canvas and the text
     present in the string_conversion_entry and updates the following value you see on Strings Panel :
@@ -194,7 +195,7 @@ def str_conversion(Canvas, text: str):
     Canvas.itemconfig("Bits", text=Bits_text)
 
 
-def check_str(Canvas, *args : str):
+def check_str(Canvas, *args : str) -> None:
     """
     This function works witht he Strings Panel and checks the 5 entry boxes
     and updates the **True** or **False** value in the Strings Panel
@@ -210,6 +211,20 @@ def check_str(Canvas, *args : str):
         Canvas.itemconfig("trueorfalse", text="False")
     print(text_list)
 
+def get_key(Canvas, type=256) -> None:
+    """
+    This function works with the F-crypt Panel and updates the **keyvalue** tag in the canvas
+    Args:
+        type(int, optional): The number of bits for the key, Defaults to 256 bits
+    """
+
+    from Scripts.Baval import bvl
+    bvl = bvl(bvl.generate_key(type))
+    
+    key = bvl.get_key()
+
+    # Update the key in the canvas
+    Canvas.itemconfig("keyvalue", text=key)
 
 class app:
     def __init__(self) -> None:
@@ -1124,28 +1139,36 @@ class app:
         image_image_2 = PhotoImage(file=self.relative_to_assets("image_2.png"))
         image_2 = canvas.create_image(722.0, 612.0, image=image_image_2)
 
+        # Key Text
         canvas.create_text(
             479.0,
             284.0,
             anchor="nw",
-            text="Key: asdfsdffsd6561$2342346/s22*a2/4*34asfd",
+            text="Key:",
             fill="#FFFFFF",
             font=("JetBrains Mono", 24 * -1, "bold"),
+        )
+        # Key value
+        canvas.create_text(
+            550.0,
+            288.0,
+            anchor="nw",
+            text="asdfsdffsd6561$2342346",
+            fill="#FFFFFF",
+            font=("JetBrains Mono", 18 * -1, "bold"),
+            tags="keyvalue"
         )
 
         image_image_3 = PhotoImage(file=self.relative_to_assets("image_3.png"))
         image_3 = canvas.create_image(722.0, 514.00390625, image=image_image_3)
 
         image_image_4 = PhotoImage(file=self.relative_to_assets("image_4.png"))
-        image_4 = canvas.create_image(722.0, 568.0, image=image_image_4)
+        image_4 = canvas.create_image(638, 568.0, image=image_image_4)
 
         # Entrie Variables
 
-        entry_1_var = StringVar(self.window)
-        entry_2_var = StringVar(self.window, "Hi Howe are you")
-
-
-
+        entry_1_var = StringVar(self.window, "Encryption Key")
+        entry_2_var = StringVar(self.window, "Select a File")
 
         entry_image_1 = PhotoImage(file=self.relative_to_assets("entry_1.png"))
         entry_bg_1 = canvas.create_image(
@@ -1170,7 +1193,7 @@ class app:
 
         entry_image_2 = PhotoImage(file=self.relative_to_assets("entry_2.png"))
         entry_bg_2 = canvas.create_image(
-            722.353271484375, 567.7018890380859, image=entry_image_2
+            722.353271484375, 567.7018899917603, image=entry_image_2
         )
         entry_2 = Entry(
             bd=0,
@@ -1183,30 +1206,30 @@ class app:
         entry_2.place(
             x=310.0,
             y=555.3845825195312,
-            width=824.70654296875,
-            height=22.634613037109375,
+            width=660,
+            height=22.634614944458008
 
         )
 
-        button_image_1 = PhotoImage(file=self.relative_to_assets("button_1.png"))
-        button_1 = Button(
-            image=button_image_1,
+        button_64_image = PhotoImage(file=self.relative_to_assets("button_1.png"))
+        button_64_bit = Button(
+            image=button_64_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_1 clicked"),
+            command=lambda: get_key(canvas,256),
             relief="flat",
         )
-        button_1.place(x=521.0, y=180.0, width=185.0, height=55.0)
+        button_64_bit.place(x=521.0, y=180.0, width=185.0, height=55.0)
 
-        button_image_2 = PhotoImage(file=self.relative_to_assets("button_2.png"))
-        button_2 = Button(
-            image=button_image_2,
+        button_128_bit_image = PhotoImage(file=self.relative_to_assets("button_2.png"))
+        button_128_bit = Button(
+            image=button_128_bit_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_2 clicked"),
+            command=lambda: get_key(canvas,512),
             relief="flat",
         )
-        button_2.place(x=737.0, y=180.0, width=185.0, height=55.0)
+        button_128_bit.place(x=737.0, y=180.0, width=185.0, height=55.0)
 
         button_image_3 = PhotoImage(file=self.relative_to_assets("button_3.png"))
         button_3 = Button(
@@ -1228,7 +1251,6 @@ class app:
         )
         button_4.place(x=613.0, y=681.0, width=220.0, height=75.0)
 
-                
         select_file_button_image = PhotoImage(file=self.relative_to_assets("select_file_button.png"))
         select_file_button = Button(
             image=select_file_button_image,
