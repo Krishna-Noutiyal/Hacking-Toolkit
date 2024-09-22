@@ -11,7 +11,7 @@ from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"./assets/frame3")
+ASSETS_PATH = OUTPUT_PATH / Path(r"F:\Hacking-Toolkit\temp\build\assets\frame3")
 
 
 def relative_to_assets(path: str) -> Path:
@@ -99,7 +99,7 @@ entry_1.place(
 entry_image_2 = PhotoImage(
     file=relative_to_assets("entry_2.png"))
 entry_bg_2 = canvas.create_image(
-    722.353271484375,
+    643.5,
     567.7018899917603,
     image=entry_image_2
 )
@@ -112,7 +112,7 @@ entry_2 = Entry(
 entry_2.place(
     x=310.0,
     y=555.3845825195312,
-    width=824.70654296875,
+    width=667.0,
     height=22.634614944458008
 )
 
