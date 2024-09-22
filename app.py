@@ -9,6 +9,7 @@ from tkinter import (
     messagebox,
     Label,
     StringVar,
+    filedialog
 )
 from Scripts.Hash import hash
 
@@ -107,7 +108,8 @@ str_to_Bits_value = ""
 hex_to_str_value = ""
 hex_to_int_value = ""
 
-
+# Original Encryption Key
+encryption_key = ""
 def hex_conversion(Canvas, text: str) -> None:
     """
     This fucntion is to use with the **Strings Panel** it takes the present canvas and the hex text
@@ -117,7 +119,7 @@ def hex_conversion(Canvas, text: str) -> None:
         2) Str Value (tag: hextostr)
 
     The converted strings can overflow the canvas thus, the value is truncated to 20 characters
-    for copy to clipboard purpose it updates the following global variables :
+    for copy to clipboard purpose, it updates the following global variables :
     \n
         1) hex_to_int_value
         2) hex_to_str_value
@@ -213,18 +215,40 @@ def check_str(Canvas, *args : str) -> None:
 
 def get_key(Canvas, type=256) -> None:
     """
-    This function works with the F-crypt Panel and updates the **keyvalue** tag in the canvas
-    Args:
-        type(int, optional): The number of bits for the key, Defaults to 256 bits
+    This function is to be used with the **Fcrypt Panel** it takes the present canvas and the type of encryption key
+    to be generated and updates the following value you see on Fcrypt Panel :
+        1) Key (tag: key)
+
+    The generated key can overflow the canvas thus, the value is truncated to 40 characters
+    for copy to clipboard purpose, it updates the following global variable :
+        1) encryption_key
+
+    **So, you can pass this variable to copyToClipboard() function to copy the value to clipboard.**
     """
 
+    global encryption_key
     from Scripts.Baval import bvl
     bvl = bvl(bvl.generate_key(type))
     
     key = bvl.get_key()
+    encryption_key = key
 
+    # Trims the original key so it fits in the canvas (40 characters)
+    encryption_key_text = key if (len(key) < 40) else str(key[:40])[2:-2] + " ..."
     # Update the key in the canvas
-    Canvas.itemconfig("keyvalue", text=key)
+    Canvas.itemconfig("keyvalue", text=encryption_key_text)
+
+def select_file(text_var: str) -> None:
+    """
+    This function takes a Stringvar() as an argument and opens a file dialog box to select a file and
+    updates the Stringvar() with the selected file path.
+
+    Args:
+        text_var (str): The StringVar associated with the file path entry box
+    """
+    file_path = filedialog.askopenfilename();
+
+    text_var.set(file_path)
 
 class app:
     def __init__(self) -> None:
@@ -249,7 +273,7 @@ class app:
         self.window.clipboard_clear()
         self.window.clipboard_append(text)
 
-        print("Copied to clipboard : " + text)
+        print("Copied to clipboard : " + str(text))
 
     def relative_to_assets(self, path: str) -> Path:
         return self.ASSETS_PATH / Path(path)
@@ -417,8 +441,25 @@ class app:
         file_entry.place(
             x=312.2752685546875,
             y=521.3884887695312,
-            width=824.70654296875,
-            height=22.634613037109375,
+            width=675.0,
+            height=23,
+        )
+
+        select_file_button_image = PhotoImage(
+            file=self.relative_to_assets("select_file_button.png")
+        )
+        select_file_button = Button(
+            image=select_file_button_image,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: select_file(canvas, file_entry_var),
+            relief="flat",
+        )
+        select_file_button.place(
+            x=1025.0,
+            y=512.0,
+            width=158.0,
+            height=44.0
         )
 
         canvas.place(x=0, y=0)
@@ -490,9 +531,10 @@ class app:
             721.479248046875, 224.88853454589844, image=image_image_3
         )
 
+        # Entry 2 Background Image
         image_image_4 = PhotoImage(file=self.relative_to_assets("image_4.png"))
         image_4 = canvas.create_image(
-            722.97802734375, 534.00390625, image=image_image_4
+            646.97802734375, 534.00390625, image=image_image_4
         )
 
         # md5 text button
@@ -1159,6 +1201,13 @@ class app:
             tags="keyvalue"
         )
 
+        # Copy to Clipboard Hex, Bits and Bytes
+        canvas.tag_bind(
+            "keyvalue",
+            "<Button-1>",
+            lambda event, canvas=canvas: self.copyToClipboard(encryption_key),
+        )
+
         image_image_3 = PhotoImage(file=self.relative_to_assets("image_3.png"))
         image_3 = canvas.create_image(722.0, 514.00390625, image=image_image_3)
 
@@ -1167,23 +1216,19 @@ class app:
 
         # Entrie Variables
 
-        entry_1_var = StringVar(self.window, "Encryption Key")
-        entry_2_var = StringVar(self.window, "Select a File")
+        encryption_key_entry_var = StringVar(self.window, "Encryption Key")
+        file_entry_var = StringVar(self.window, "Select a File")
 
-        entry_image_1 = PhotoImage(file=self.relative_to_assets("entry_1.png"))
-        entry_bg_1 = canvas.create_image(
-            722.353271484375, 513.7057952880859, image=entry_image_1
-        )
-        entry_1 = Entry(
+        encryption_key_entry = Entry(
             bd=0,
             bg="#053B50",
             fg="#EEEEEE",
             highlightthickness=0,
             font=("JetBrains Mono", 16 * -1, "bold"),
-            textvariable=entry_1_var
+            textvariable=encryption_key_entry_var
 
         )
-        entry_1.place(
+        encryption_key_entry.place(
             x=310.0,
             y=501.38848876953125,
             width=824.70654296875,
@@ -1191,19 +1236,16 @@ class app:
             
         )
 
-        entry_image_2 = PhotoImage(file=self.relative_to_assets("entry_2.png"))
-        entry_bg_2 = canvas.create_image(
-            722.353271484375, 567.7018899917603, image=entry_image_2
-        )
-        entry_2 = Entry(
+        # Fcrypt File Entry
+        file_entry = Entry(
             bd=0,
             bg="#053B50",
             fg="#EEEEEE",
             highlightthickness=0,
             font=("JetBrains Mono", 16 * -1, "bold"),
-            textvariable=entry_2_var
+            textvariable=file_entry_var
         )
-        entry_2.place(
+        file_entry.place(
             x=310.0,
             y=555.3845825195312,
             width=660,
@@ -1211,35 +1253,50 @@ class app:
 
         )
 
-        button_64_image = PhotoImage(file=self.relative_to_assets("button_1.png"))
-        button_64_bit = Button(
-            image=button_64_image,
+        # Fcrypt Select File Button
+        select_file_button_image = PhotoImage(
+            file=self.relative_to_assets("select_file_button.png")
+        )
+        select_file_button = Button(
+            image=select_file_button_image,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: select_file(file_entry_var),
+            relief="flat",
+        )
+        select_file_button.place(x=1009.0, y=546.0, width=158.0, height=44.0)
+
+        # 256 Bit Key Button
+        button_256_image = PhotoImage(file=self.relative_to_assets("button_1.png"))
+        button_256_bit = Button(
+            image=button_256_image,
             borderwidth=0,
             highlightthickness=0,
             command=lambda: get_key(canvas,256),
             relief="flat",
         )
-        button_64_bit.place(x=521.0, y=180.0, width=185.0, height=55.0)
+        button_256_bit.place(x=521.0, y=180.0, width=185.0, height=55.0)
 
-        button_128_bit_image = PhotoImage(file=self.relative_to_assets("button_2.png"))
-        button_128_bit = Button(
-            image=button_128_bit_image,
+        # 512 Bit Key Button
+        button_512_bit_image = PhotoImage(file=self.relative_to_assets("button_2.png"))
+        button_512_bit = Button(
+            image=button_512_bit_image,
             borderwidth=0,
             highlightthickness=0,
             command=lambda: get_key(canvas,512),
             relief="flat",
         )
-        button_128_bit.place(x=737.0, y=180.0, width=185.0, height=55.0)
+        button_512_bit.place(x=737.0, y=180.0, width=185.0, height=55.0)
 
-        button_image_3 = PhotoImage(file=self.relative_to_assets("button_3.png"))
-        button_3 = Button(
-            image=button_image_3,
+        copy_button_image = PhotoImage(file=self.relative_to_assets("button_3.png"))
+        copy_button = Button(
+            image=copy_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_3 clicked"),
+            command=lambda: encryption_key_entry_var.set(encryption_key),
             relief="flat",
         )
-        button_3.place(x=630.0, y=346.0, width=185.0, height=55.0)
+        copy_button.place(x=630.0, y=346.0, width=185.0, height=55.0)
 
         button_image_4 = PhotoImage(file=self.relative_to_assets("button_4.png"))
         button_4 = Button(
@@ -1250,21 +1307,6 @@ class app:
             relief="flat",
         )
         button_4.place(x=613.0, y=681.0, width=220.0, height=75.0)
-
-        select_file_button_image = PhotoImage(file=self.relative_to_assets("select_file_button.png"))
-        select_file_button = Button(
-            image=select_file_button_image,
-            borderwidth=0,
-            highlightthickness=0,
-            command=lambda: print("select_file_button clicked"),
-            relief="flat"
-        )
-        select_file_button.place(
-            x=1009.0,
-            y=546.0,
-            width=158.0,
-            height=44.0
-        )
 
         canvas.create_text(
             521.0,
