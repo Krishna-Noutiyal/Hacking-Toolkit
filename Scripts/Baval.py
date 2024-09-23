@@ -17,7 +17,7 @@ class bvl(f):
     \nExample:
     ```
     # Initalize the class
-    bvl = bvl(bvl.generate_key(type))
+    bvl = bvl(bvl.generate_key(bites = 256))
     
     # To encrypt a file
     bvl.encrypt_file(path)
@@ -56,7 +56,7 @@ class bvl(f):
         self._signing_key = key[:int(len(key)/2)]
         self._encryption_key = key[int(len(key)/2):]
 
-    def encrypt_file(self,path:str,save_key=False) -> None:
+    def encrypt_file(self,path:str,save_key=False) -> float:
         """
         \nEncryptes a file and returns the encryption key
         \n\tInputs:

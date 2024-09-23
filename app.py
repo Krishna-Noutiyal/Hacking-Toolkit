@@ -12,6 +12,8 @@ from tkinter import (
     filedialog
 )
 from Scripts.Hash import hash
+from Scripts.Baval import bvl
+
 
 """
 ToDo:
@@ -237,6 +239,20 @@ def get_key(Canvas, type=256) -> None:
     encryption_key_text = key if (len(key) < 40) else str(key[:40])[2:-2] + " ..."
     # Update the key in the canvas
     Canvas.itemconfig("keyvalue", text=encryption_key_text)
+
+
+def encrypt_file(file_path: str, encryption_key: bytes | str) -> bool:
+
+    from Scripts.Baval import bvl
+    bvl = bvl(encryption_key)
+    try:
+        assert bvl.encrypt_file(file_path,True)
+        messagebox.showinfo("Success", "File encrypted successfully")
+    except:
+        messagebox.showerror("Error", "Error in encrypting file")
+        return False
+
+    return True
 
 def select_file(text_var: str) -> None:
     """
@@ -1298,15 +1314,15 @@ class app:
         )
         copy_button.place(x=630.0, y=346.0, width=185.0, height=55.0)
 
-        button_image_4 = PhotoImage(file=self.relative_to_assets("button_4.png"))
-        button_4 = Button(
-            image=button_image_4,
+        encrypt_button_image = PhotoImage(file=self.relative_to_assets("button_4.png"))
+        encrypt_button = Button(
+            image=encrypt_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_4 clicked"),
+            command=lambda: encrypt_file(file_entry_var.get(), encryption_key),
             relief="flat",
         )
-        button_4.place(x=613.0, y=681.0, width=220.0, height=75.0)
+        encrypt_button.place(x=613.0, y=681.0, width=220.0, height=75.0)
 
         canvas.create_text(
             521.0,
