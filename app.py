@@ -468,7 +468,7 @@ class app:
             image=select_file_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: select_file(canvas, file_entry_var),
+            command=lambda: select_file(file_entry_var),
             relief="flat",
         )
         select_file_button.place(
