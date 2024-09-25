@@ -241,6 +241,21 @@ def get_key(Canvas, type=256) -> None:
     Canvas.itemconfig("keyvalue", text=encryption_key_text)
 
 
+def decrypt_file(file_path: str, encryption_key: bytes | str) -> bool:
+
+    from Scripts.Baval import bvl
+    bvl = bvl(encryption_key)
+    try:
+        assert bvl.decrypt_file(file_path)
+        messagebox.showinfo("Success", "File Decrypted successfully")
+    except Exception as e:
+        print(e)
+        messagebox.showerror("Error", "Error in Decrypting file")
+        return False
+
+    return True
+
+
 def encrypt_file(file_path: str, encryption_key: bytes | str) -> bool:
 
     from Scripts.Baval import bvl
@@ -1314,7 +1329,9 @@ class app:
         )
         copy_button.place(x=630.0, y=346.0, width=185.0, height=55.0)
 
-        encrypt_button_image = PhotoImage(file=self.relative_to_assets("button_4.png"))
+        encrypt_button_image = PhotoImage(
+            file=self.relative_to_assets("Encrypt_btn.png")
+        )
         encrypt_button = Button(
             image=encrypt_button_image,
             borderwidth=0,
@@ -1322,7 +1339,22 @@ class app:
             command=lambda: encrypt_file(file_entry_var.get(), encryption_key),
             relief="flat",
         )
-        encrypt_button.place(x=613.0, y=681.0, width=220.0, height=75.0)
+        encrypt_button.place(x=436.0, y=682.0, width=220.0, height=75.0)
+
+        decrypt_button_image = PhotoImage(file=self.relative_to_assets("Decrypt_btn.png"))
+        decrypt_button = Button(
+            image=decrypt_button_image,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: decrypt_file(file_entry_var.get(), encryption_key),
+            relief="flat"
+        )
+        decrypt_button.place(
+            x=789.0,
+            y=682.0,
+            width=220.0,
+            height=75.0
+        )
 
         canvas.create_text(
             521.0,

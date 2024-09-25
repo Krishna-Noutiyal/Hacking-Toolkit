@@ -174,8 +174,8 @@ button_4 = Button(
     relief="flat"
 )
 button_4.place(
-    x=613.0,
-    y=681.0,
+    x=436.0,
+    y=682.0,
     width=220.0,
     height=75.0
 )
@@ -190,6 +190,22 @@ button_5 = Button(
     relief="flat"
 )
 button_5.place(
+    x=789.0,
+    y=682.0,
+    width=220.0,
+    height=75.0
+)
+
+button_image_6 = PhotoImage(
+    file=relative_to_assets("button_6.png"))
+button_6 = Button(
+    image=button_image_6,
+    borderwidth=0,
+    highlightthickness=0,
+    command=lambda: print("button_6 clicked"),
+    relief="flat"
+)
+button_6.place(
     x=1009.0,
     y=546.0,
     width=158.0,
@@ -205,31 +221,6 @@ canvas.create_text(
     font=("JetBrainsMonoRoman ExtraBold", 96 * -1)
 )
 
-button_image_6 = PhotoImage(
-    file=relative_to_assets("button_6.png"))
-button_6 = Button(
-    image=button_image_6,
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_6 clicked"),
-    relief="flat"
-)
-button_6.place(
-    x=37.0,
-    y=34.0,
-    width=150.0,
-    height=71.0
-)
-
-canvas.create_text(
-    540.0,
-    623.0,
-    anchor="nw",
-    text="Saves Encryption Key in a File",
-    fill="#FFFFFF",
-    font=("JetBrainsMonoRoman ExtraBold", 20 * -1)
-)
-
 button_image_7 = PhotoImage(
     file=relative_to_assets("button_7.png"))
 button_7 = Button(
@@ -240,10 +231,19 @@ button_7 = Button(
     relief="flat"
 )
 button_7.place(
-    x=1300.0,
-    y=290.0,
-    width=118.0,
-    height=70.0
+    x=37.0,
+    y=34.0,
+    width=150.0,
+    height=71.0
+)
+
+canvas.create_text(
+    477.0,
+    623.0,
+    anchor="nw",
+    text="Encrypting Saves Encryption Key in a File",
+    fill="#FFFFFF",
+    font=("JetBrainsMonoRoman ExtraBold", 20 * -1)
 )
 
 button_image_8 = PhotoImage(
@@ -257,7 +257,7 @@ button_8 = Button(
 )
 button_8.place(
     x=1300.0,
-    y=372.0,
+    y=290.0,
     width=118.0,
     height=70.0
 )
@@ -272,6 +272,22 @@ button_9 = Button(
     relief="flat"
 )
 button_9.place(
+    x=1300.0,
+    y=372.0,
+    width=118.0,
+    height=70.0
+)
+
+button_image_10 = PhotoImage(
+    file=relative_to_assets("button_10.png"))
+button_10 = Button(
+    image=button_image_10,
+    borderwidth=0,
+    highlightthickness=0,
+    command=lambda: print("button_10 clicked"),
+    relief="flat"
+)
+button_10.place(
     x=1300.0,
     y=454.0,
     width=118.0,
