@@ -102,184 +102,6 @@ def getfilehash(Canvas, tag: str, filepath: str, algorithm: str):
         print(value)
         Canvas.itemconfig(tag, text=value)
 
-# Don't Change these variables hex_conersion and str_conversion will use them in the Strings Panel
-str_to_hex_value = ""
-str_to_Bytes_value = ""
-str_to_Bits_value = ""
-
-hex_to_str_value = ""
-hex_to_int_value = ""
-
-# Original Encryption Key
-encryption_key = ""
-def hex_conversion(Canvas, text: str) -> None:
-    """
-    This fucntion is to use with the **Strings Panel** it takes the present canvas and the hex text
-    present in the hex_conversion_entry and updates the following value you see on Strings Panel :
-    \n
-        1) Int Values (tag: hextoint)
-        2) Str Value (tag: hextostr)
-
-    The converted strings can overflow the canvas thus, the value is truncated to 20 characters
-    for copy to clipboard purpose, it updates the following global variables :
-    \n
-        1) hex_to_int_value
-        2) hex_to_str_value
-
-
-    **So, you can pass these variables to copyToClipboard() function to copy the value to clipboard.**
-    """
-    from Scripts.Strings import string
-
-    global hex_to_str_value
-    global hex_to_int_value
-
-    int_value = string.hex_To_Int_Or_String(text)[1]
-    str_value = string.hex_To_Int_Or_String(text)[0]
-
-    hex_to_int_value = str(int_value)
-    hex_to_str_value = str(str_value)
-
-    try:
-
-        Int_text = (
-            int_value if (len(str(int_value)) < 20) else str(int_value)[:20] + " ..."
-        )
-    except:
-        Int_text = "Error"
-    try:
-        Str_text = str_value if (len(str_value) < 20) else str_value[:20] + " ..."
-    except:
-        Str_text = "Error"
-
-    Canvas.itemconfig("hextoint", text=Int_text)
-    Canvas.itemconfig("hextostr", text=Str_text)
-
-
-def str_conversion(Canvas, text: str) -> None:
-    """
-    This fucntion is to use with the **Strings Panel** it takes the present canvas and the text
-    present in the string_conversion_entry and updates the following value you see on Strings Panel :
-    \n
-        1) Hex Values (tag: Hex)
-        2) Bytes Value (tag: Bytes)
-        3) Bits Value (tag: Bits)
-
-    The converted strings can overflow the canvas thus, the value is truncated to 40 characters
-    for copy to clipboard purpose it updates the following global variables :
-    \n
-        1) str_to_hex_value
-        2) str_to_Bytes_value
-        3) str_to_Bits_value
-
-    **So, you can pass these variables to copyToClipboard() function to copy the value to clipboard.**
-    """
-    from Scripts.Strings import string
-
-    global str_to_hex_value
-    global str_to_Bits_value
-    global str_to_Bytes_value
-
-    hex_value = string.str_To_Hex(text)
-    bytes_value = string.str_To_Bytes(text)
-    bits_value = string.str_To_Bits(text)
-
-    str_to_hex_value = hex_value
-    str_to_Bytes_value = bytes_value
-    str_to_Bits_value = bits_value
-
-    Hex_text = hex_value if (len(hex_value) < 40) else hex_value[:40] + " ..."
-
-    Bytes_text = bytes_value if (len(bytes_value) < 40) else bytes_value[:40] + " ..."
-
-    Bits_text = bits_value if (len(bits_value) < 40) else bits_value[:40] + " ..."
-
-    Canvas.itemconfig("Hex", text=Hex_text)
-    Canvas.itemconfig("Bytes", text=Bytes_text)
-    Canvas.itemconfig("Bits", text=Bits_text)
-
-
-def check_str(Canvas, *args : str) -> None:
-    """
-    This function works witht he Strings Panel and checks the 5 entry boxes
-    and updates the **True** or **False** value in the Strings Panel
-    """
-    from Scripts.Strings import string
-
-    text_list = [i for i in args if i]  # Remove empty strings
-
-    stinger = string(text_list)
-    if stinger.issame():
-        Canvas.itemconfig("trueorfalse", text="True")
-    else:
-        Canvas.itemconfig("trueorfalse", text="False")
-    print(text_list)
-
-def get_key(Canvas, type=256) -> None:
-    """
-    This function is to be used with the **Fcrypt Panel** it takes the present canvas and the type of encryption key
-    to be generated and updates the following value you see on Fcrypt Panel :
-        1) Key (tag: key)
-
-    The generated key can overflow the canvas thus, the value is truncated to 40 characters
-    for copy to clipboard purpose, it updates the following global variable :
-        1) encryption_key
-
-    **So, you can pass this variable to copyToClipboard() function to copy the value to clipboard.**
-    """
-
-    global encryption_key
-    from Scripts.Baval import bvl
-    bvl = bvl(bvl.generate_key(type))
-    
-    key = bvl.get_key()
-    encryption_key = key
-
-    # Trims the original key so it fits in the canvas (40 characters)
-    encryption_key_text = key if (len(key) < 40) else str(key[:40])[2:-2] + " ..."
-    # Update the key in the canvas
-    Canvas.itemconfig("keyvalue", text=encryption_key_text)
-
-
-def decrypt_file(file_path: str, encryption_key: bytes | str) -> bool:
-
-    from Scripts.Baval import bvl
-    bvl = bvl(encryption_key)
-    try:
-        assert bvl.decrypt_file(file_path)
-        messagebox.showinfo("Success", "File Decrypted successfully")
-    except Exception as e:
-        print(e)
-        messagebox.showerror("Error", "Error in Decrypting file")
-        return False
-
-    return True
-
-
-def encrypt_file(file_path: str, encryption_key: bytes | str) -> bool:
-
-    from Scripts.Baval import bvl
-    bvl = bvl(encryption_key)
-    try:
-        assert bvl.encrypt_file(file_path,True)
-        messagebox.showinfo("Success", "File encrypted successfully")
-    except:
-        messagebox.showerror("Error", "Error in encrypting file")
-        return False
-
-    return True
-
-def select_file(text_var: str) -> None:
-    """
-    This function takes a Stringvar() as an argument and opens a file dialog box to select a file and
-    updates the Stringvar() with the selected file path.
-
-    Args:
-        text_var (str): The StringVar associated with the file path entry box
-    """
-    file_path = filedialog.askopenfilename();
-
-    text_var.set(file_path)
 
 class app:
     def __init__(self) -> None:
@@ -290,7 +112,184 @@ class app:
         self.OUTPUT_PATH = Path(__file__).parent
         self.ASSETS_PATH = self.OUTPUT_PATH / Path(r"./assets")
 
+        # Don't Change these variables hex_conersion and str_conversion will use them in the Strings Panel
+        self.str_to_hex_value = ""
+        self.str_to_Bytes_value = ""
+        self.str_to_Bits_value = ""
+
+        self.hex_to_str_value = ""
+        self.hex_to_int_value = ""
+
+        # Original Encryption Key
+        self.encryption_key = ""
+
         self.build_Menu()
+
+    def hex_conversion(self,Canvas, text: str) -> None:
+        """
+        This fucntion is to use with the **Strings Panel** it takes the present canvas and the hex text
+        present in the hex_conversion_entry and updates the following value you see on Strings Panel :
+        \n
+            1) Int Values (tag: hextoint)
+            2) Str Value (tag: hextostr)
+
+        The converted strings can overflow the canvas thus, the value is truncated to 20 characters
+        for copy to clipboard purpose, it updates the following global variables :
+        \n
+            1) hex_to_int_value
+            2) hex_to_str_value
+
+
+        **So, you can pass these variables to copyToClipboard() function to copy the value to clipboard.**
+        """
+        from Scripts.Strings import string
+
+        int_value = string.hex_To_Int_Or_String(text)[1]
+        str_value = string.hex_To_Int_Or_String(text)[0]
+
+        self.hex_to_int_value = str(int_value)
+        self.hex_to_str_value = str(str_value)
+
+        try:
+
+            Int_text = (
+                int_value if (len(str(int_value)) < 20) else str(int_value)[:20] + " ..."
+            )
+        except:
+            Int_text = "Error"
+        try:
+            Str_text = str_value if (len(str_value) < 20) else str_value[:20] + " ..."
+        except:
+            Str_text = "Error"
+
+        Canvas.itemconfig("hextoint", text=Int_text)
+        Canvas.itemconfig("hextostr", text=Str_text)
+
+    def str_conversion(self,Canvas, text: str) -> None:
+        """
+        This fucntion is to use with the **Strings Panel** it takes the present canvas and the text
+        present in the string_conversion_entry and updates the following value you see on Strings Panel :
+        \n
+            1) Hex Values (tag: Hex)
+            2) Bytes Value (tag: Bytes)
+            3) Bits Value (tag: Bits)
+
+        The converted strings can overflow the canvas thus, the value is truncated to 40 characters
+        for copy to clipboard purpose it updates the following global variables :
+        \n
+            1) str_to_hex_value
+            2) str_to_Bytes_value
+            3) str_to_Bits_value
+
+        **So, you can pass these variables to copyToClipboard() function to copy the value to clipboard.**
+        """
+        from Scripts.Strings import string
+
+        hex_value = string.str_To_Hex(text)
+        bytes_value = string.str_To_Bytes(text)
+        bits_value = string.str_To_Bits(text)
+
+        self.str_to_hex_value = hex_value
+        self.str_to_Bytes_value = bytes_value
+        self.str_to_Bits_value = bits_value
+
+        Hex_text = hex_value if (len(hex_value) < 40) else hex_value[:40] + " ..."
+
+        Bytes_text = bytes_value if (len(bytes_value) < 40) else bytes_value[:40] + " ..."
+
+        Bits_text = bits_value if (len(bits_value) < 40) else bits_value[:40] + " ..."
+
+        Canvas.itemconfig("Hex", text=Hex_text)
+        Canvas.itemconfig("Bytes", text=Bytes_text)
+        Canvas.itemconfig("Bits", text=Bits_text)
+
+    def check_str(self,Canvas, *args: str) -> None:
+        """
+        This function works witht he Strings Panel and checks the 5 entry boxes
+        and updates the **True** or **False** value in the Strings Panel
+        """
+        from Scripts.Strings import string
+
+        text_list = [i for i in args if i]  # Remove empty strings
+
+        stinger = string(text_list)
+        if stinger.issame():
+            Canvas.itemconfig("trueorfalse", text="True")
+        else:
+            Canvas.itemconfig("trueorfalse", text="False")
+        print(text_list)
+
+    def get_key(self,Canvas, type=256) -> None:
+        """
+        This function is to be used with the **Fcrypt Panel** it takes the present canvas and the type of encryption key
+        to be generated and updates the following value you see on Fcrypt Panel :
+            1) Key (tag: key)
+
+        The generated key can overflow the canvas thus, the value is truncated to 40 characters
+        for copy to clipboard purpose, it updates the following global variable :
+            1) encryption_key
+
+        **So, you can pass this variable to copyToClipboard() function to copy the value to clipboard.**
+        """
+
+        from Scripts.Baval import bvl
+
+        bvl = bvl(bvl.generate_key(type))
+
+        key = bvl.get_key()
+        self.encryption_key = key
+
+        # Trims the original key so it fits in the canvas (40 characters)
+        encryption_key_text = key if (len(key) < 40) else str(key[:40])[2:-2] + " ..."
+        # Update the key in the canvas
+        Canvas.itemconfig("keyvalue", text=encryption_key_text)
+
+    def decrypt_file(self,file_path: str, encryption_key: bytes|str) -> bool:
+
+        from Scripts.Baval import bvl
+        if encryption_key[-1] == "'":
+            encryption_key = encryption_key[2:-1]
+
+        decrypter = bvl(encryption_key)
+
+        try:
+            decrypter.decrypt_file(file_path)
+            messagebox.showinfo("Success", "File Decrypted successfully")
+        except Exception as e:
+            print(e)
+            messagebox.showerror("Error", "Error in Decrypting file")
+            return False
+
+        return True
+
+    def encrypt_file(self,file_path: str, encryption_key: bytes|str) -> bool:
+
+        from Scripts.Baval import bvl
+
+        encryption_key = encryption_key[2:-1] # Remove b' from start and ' from end
+
+        bvl = bvl(encryption_key)
+        try:
+            bvl.encrypt_file(file_path, True)
+            messagebox.showinfo("Success", "File encrypted successfully")
+        except Exception as e:
+            print(e)
+            messagebox.showerror("Error", "Error in encrypting file")
+            return False
+
+        return True
+
+    def select_file(self,text_var: str) -> None:
+        """
+        This function takes a Stringvar() as an argument and opens a file dialog box to select a file and
+        updates the Stringvar() with the selected file path.
+
+        Args:
+            text_var (str): The StringVar associated with the file path entry box
+        """
+        file_path = filedialog.askopenfilename()
+
+        text_var.set(file_path)
 
     def copyToClipboard(self, text):
         """\nCopies the given text to clipboard and returns True
@@ -483,7 +482,7 @@ class app:
             image=select_file_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: select_file(file_entry_var),
+            command=lambda: self.select_file(file_entry_var),
             relief="flat",
         )
         select_file_button.place(
@@ -921,7 +920,7 @@ class app:
             image=convert_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: str_conversion(canvas, string_conversion_entry.get()),
+            command=lambda: self.str_conversion(canvas, string_conversion_entry.get()),
             relief="flat",
         )
         convert_button.place(
@@ -995,18 +994,18 @@ class app:
         canvas.tag_bind(
             "Hex",
             "<Button-1>",
-            lambda event, canvas=canvas: self.copyToClipboard(str_to_hex_value),
+            lambda event, canvas=canvas: self.copyToClipboard(self.str_to_hex_value),
         )
         canvas.tag_bind(
             "Bits",
             "<Button-1>",
-            lambda event, canvas=canvas: self.copyToClipboard(str_to_Bits_value),
+            lambda event, canvas=canvas: self.copyToClipboard(self.str_to_Bits_value),
         )
 
         canvas.tag_bind(
             "Bytes",
             "<Button-1>",
-            lambda event, canvas=canvas: self.copyToClipboard(str_to_Bytes_value),
+            lambda event, canvas=canvas: self.copyToClipboard(self.str_to_Bytes_value),
         )
 
         # Hex To Int,String
@@ -1031,7 +1030,7 @@ class app:
         # Updateing Int and Str values in Hex Conversion for any update in hex_conersion_entry
         hex_conversion_entry_var.trace_add(
             "write",
-            lambda name, index, mode, canvas=canvas: hex_conversion(
+            lambda name, index, mode, canvas=canvas: self.hex_conversion(
                 canvas, hex_conversion_entry_var.get()
             ),
         )
@@ -1126,12 +1125,12 @@ class app:
         canvas.tag_bind(
             "hextoint",
             "<Button-1>",
-            lambda event, canvas=canvas: self.copyToClipboard(hex_to_int_value),
+            lambda event, canvas=canvas: self.copyToClipboard(self.hex_to_int_value),
         )
         canvas.tag_bind(
             "hextostr",
             "<Button-1>",
-            lambda event, canvas=canvas: self.copyToClipboard(hex_to_str_value),
+            lambda event, canvas=canvas: self.copyToClipboard(self.hex_to_str_value),
         )
 
         button_image_2 = PhotoImage(file=self.relative_to_assets("button_2.png"))
@@ -1152,7 +1151,14 @@ class app:
             image=check_str_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: check_str(canvas, entry_1_var.get(), entry_2_var.get(), entry_3_var.get(), entry_4_var.get(), entry_5_var.get()),
+            command=lambda: self.check_str(
+                canvas,
+                entry_1_var.get(),
+                entry_2_var.get(),
+                entry_3_var.get(),
+                entry_4_var.get(),
+                entry_5_var.get(),
+            ),
             relief="flat",
         )
         check_str_button.place(
@@ -1236,7 +1242,7 @@ class app:
         canvas.tag_bind(
             "keyvalue",
             "<Button-1>",
-            lambda event, canvas=canvas: self.copyToClipboard(encryption_key),
+            lambda event, canvas=canvas: self.copyToClipboard(self.encryption_key),
         )
 
         image_image_3 = PhotoImage(file=self.relative_to_assets("image_3.png"))
@@ -1292,7 +1298,7 @@ class app:
             image=select_file_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: select_file(file_entry_var),
+            command=lambda: self.select_file(file_entry_var),
             relief="flat",
         )
         select_file_button.place(x=1009.0, y=546.0, width=158.0, height=44.0)
@@ -1303,7 +1309,7 @@ class app:
             image=button_256_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: get_key(canvas,256),
+            command=lambda: self.get_key(canvas, 256),
             relief="flat",
         )
         button_256_bit.place(x=521.0, y=180.0, width=185.0, height=55.0)
@@ -1314,7 +1320,7 @@ class app:
             image=button_512_bit_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: get_key(canvas,512),
+            command=lambda: self.get_key(canvas, 512),
             relief="flat",
         )
         button_512_bit.place(x=737.0, y=180.0, width=185.0, height=55.0)
@@ -1324,7 +1330,7 @@ class app:
             image=copy_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: encryption_key_entry_var.set(encryption_key),
+            command=lambda: encryption_key_entry_var.set(self.encryption_key),
             relief="flat",
         )
         copy_button.place(x=630.0, y=346.0, width=185.0, height=55.0)
@@ -1336,7 +1342,9 @@ class app:
             image=encrypt_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: encrypt_file(file_entry_var.get(), encryption_key),
+            command=lambda: self.encrypt_file(
+                file_entry_var.get(), encryption_key_entry_var.get()
+            ),
             relief="flat",
         )
         encrypt_button.place(x=436.0, y=682.0, width=220.0, height=75.0)
@@ -1346,7 +1354,7 @@ class app:
             image=decrypt_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: decrypt_file(file_entry_var.get(), encryption_key),
+            command=lambda: self.decrypt_file(file_entry_var.get(), encryption_key_entry_var.get()),
             relief="flat"
         )
         decrypt_button.place(

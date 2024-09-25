@@ -43,18 +43,18 @@ class bvl(f):
     ) -> None:
         self.key = key
         try:
-            key = base64.urlsafe_b64decode(key)
+            self.decoded_key = base64.urlsafe_b64decode(key)
         except binascii.Error as exc:
             raise ValueError(
                 "bvl key must be a 32,64 bit key url-safe base64-encoded bytes."
             ) from exc
-        if len(key) not in [32,64]:
+        if len(self.decoded_key) not in [32, 64]:
             raise ValueError(
                 "bvl key must be a 32,64 bit key url-safe base64-encoded bytes."
             )
 
-        self._signing_key = key[:int(len(key)/2)]
-        self._encryption_key = key[int(len(key)/2):]
+        self._signing_key = self.decoded_key[:int(len(self.decoded_key)/2)]
+        self._encryption_key = self.decoded_key[int(len(self.decoded_key)/2):]
 
     def encrypt_file(self,path:str,save_key=False) -> float:
         """
@@ -63,10 +63,10 @@ class bvl(f):
         \n\t\tpath: File to be encrypted
         \n\t\tsave_key: Whether to save the encryption key in a file in same path
         \n\n\tReturns:
-        \n\t\tTime Took To Encrypt
+        \n\t\ttime : Time Took To Encrypt
         """
         if save_key:
-            with open(os.path.dirname(path)+"\\encryptionkey.key","wb") as key_file:
+            with open(os.path.dirname(path)+"\\encryptionkey.key","w") as key_file:
                 key_file.write(self.get_key())
 
         s_time = time()
@@ -80,13 +80,13 @@ class bvl(f):
 
         return time() - s_time
 
-    def decrypt_file(self,path:str) -> str:
+    def decrypt_file(self,path:str) -> float:
         """
         \nEncryptes a file and returns the encryption key
         \n\tInputs:
         \n\t\tpath: File to be decrypted
         \n\n\tReturns:
-        \n\t\tTime Took to Decrypt
+        \n\t\ttime : Time Took to Decrypt
         \n# NOTE
         \n##### The function takes the default key given when creating the class object
         \n##### You need to give the same key by which the file was encrypted else
