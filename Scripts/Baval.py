@@ -5,6 +5,8 @@ import os
 import typing
 import binascii
 from time import time
+
+
 class bvl(f):
     """
     \nThis is a wrapper class for the Fernet Class in cryptography package
