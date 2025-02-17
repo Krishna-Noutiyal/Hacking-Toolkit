@@ -76,7 +76,7 @@ def getfilehash(Canvas, tag: str, filepath: str, algorithm: str):
     \n\talgorithm : The algorithm to be used to hash the text (md5,sha1,sha256,sha512)
 ### How the canvase item is configured
     \nAfter getting the hash for the given text
-    \nIf the text is more then 256 characters long then it breaks it into two parts
+    \nIf he text is more then 256 characters long then it breaks it into two parts
     \nand adds a new line character in between
     """
     # Hasher to Hash the Entry Value
