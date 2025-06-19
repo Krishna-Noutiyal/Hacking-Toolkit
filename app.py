@@ -109,8 +109,14 @@ class app:
         self.window = Tk()
         self.window.geometry("1445x813")
         self.window.configure(bg="#053B50")
+        self.window.title("Hacking Toolkit")  # Set window title
+        self.window
+        # Asset and Output Path
         self.OUTPUT_PATH = Path(__file__).parent
         self.ASSETS_PATH = self.OUTPUT_PATH / Path(r"./assets")
+        
+        # Icon of the software
+        self.window.iconbitmap(self.OUTPUT_PATH / "assets" / "icon.ico")  # Set window icon (ICO format)
 
         # Don't Change these variables hex_conersion and str_conversion will use them in the Strings Panel
         self.str_to_hex_value = ""
