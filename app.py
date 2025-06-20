@@ -116,7 +116,7 @@ class app:
         self.ASSETS_PATH = self.OUTPUT_PATH / Path(r"./assets")
         
         # Icon of the software
-        self.window.iconbitmap(self.OUTPUT_PATH / "assets" / "icon.ico")  # Set window icon (ICO format)
+        self.window.iconbitmap(self.OUTPUT_PATH / "assets" / "iconv2.ico")  # Set window icon (ICO format)
 
         # Don't Change these variables hex_conersion and str_conversion will use them in the Strings Panel
         self.str_to_hex_value = ""
@@ -1431,6 +1431,6 @@ class app:
         self.window.mainloop()
 
 
-app().build_Menu()
+app_instance = app()
 
 # root.mainloop()
