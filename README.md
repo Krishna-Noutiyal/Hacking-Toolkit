@@ -1,4 +1,11 @@
-# 🛡️ Hacking Toolkit
+# <div align="center"><img src="assets/iconv2.ico" width=32 align="center"/> Hacking Toolkit
+
+<div align="center">
+
+<img src="assets/iconv2.ico" align="center">
+</div>
+
+<br>
 
 A comprehensive cybersecurity toolkit built with Python and Tkinter, designed for security professionals, ethical hackers, and cybersecurity enthusiasts. This all-in-one application provides essential tools for hashing, string manipulation, file encryption, and cryptographic operations.
 
@@ -12,28 +19,34 @@ A comprehensive cybersecurity toolkit built with Python and Tkinter, designed fo
 Below are some screenshots of the Hacking Toolkit, highlighting its intuitive interface and robust features.
 
 <div align="center">
-  <img src="assets/hkit_images/menu.png" alt="Main Menu" width="600"/>
+  <img src="assets/hkit_images/menu.png" alt="Main Menu"/>
   <p>
-    <b>Main Menu:</b><br>
+    <b>Main Menu</b><br>
     The main dashboard of Hacking Toolkit provides a clean and modern interface, allowing users to quickly access all available tools. Each panel is clearly labeled, and navigation is seamless, ensuring that both beginners and professionals can find and use features with ease. The design emphasizes usability, with quick access buttons and helpful tooltips throughout.
   </p>
 </div>
 
+---
+
 <div align="center">
-  <img src="assets/hkit_images/hash.png" alt="Hash Panel" width="600"/>
+  <img src="assets/hkit_images/hash.png" alt="Hash Panel"/>
   <p>
     <b>Hash Panel</b><br>
     The Hash Panel supports multiple hashing algorithms including MD5, SHA1, SHA256, and SHA512. Users can hash both text and files, with instant results displayed in a user-friendly format. One-click copy functionality and a built-in file browser make it easy to generate and use hash values for integrity checks, password storage, or digital signatures.
   </p>
 </div>
 
+---
+
 <div align="center">
-  <img src="assets/hkit_images/strings.png" alt="Strings Panel" width="600"/>
+  <img src="assets/hkit_images/strings.png" alt="Strings Panel"/>
   <p>
     <b>Strings Panel</b><br>
     This panel offers advanced string manipulation tools, including simultaneous comparison of up to five strings, and conversion between text, hexadecimal, bytes, and binary formats. The interactive results area allows users to copy any output with a single click, streamlining workflows for encoding, decoding, and data analysis tasks.
   </p>
 </div>
+
+---
 
 <div align="center">
   <img src="assets/hkit_images/fcrypt.png" alt="F-Crypt Panel" width="600"/>
@@ -42,6 +55,8 @@ Below are some screenshots of the Hacking Toolkit, highlighting its intuitive in
     The F-Crypt Panel provides secure file encryption and decryption using industry-standard algorithms. Users can generate strong 256-bit or 512-bit keys, manage key storage, and perform file operations with clear status feedback. The workflow is designed to be straightforward, making strong encryption accessible to all users without sacrificing security.
   </p>
 </div>
+
+---
 
 ## 🚀 Features
 
