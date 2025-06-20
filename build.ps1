@@ -18,7 +18,7 @@ Write-Host "${Cyan}=====================================${Reset}"
 # === Configuration ===
 $ScriptName  = "app.py"
 $AppName     = "HKit"
-$IconFile    = "assets\icon.ico"
+$IconFile    = "assets\iconv2.ico"
 $VersionFile = "version_info.txt"
 $DataFolders = @(
     "assets\*;assets",
