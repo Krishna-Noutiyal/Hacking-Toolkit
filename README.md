@@ -48,6 +48,9 @@ Download the compiled executable from the releases section:
 2. Download the latest `.exe` file
 3. Run the executable - no installation required!
 
+> [!NOTE]
+> I am going to publish the release soon 😊
+
 ### For Developers
 If you want to run from source or contribute:
 
