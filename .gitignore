@@ -6,3 +6,6 @@ build/
 dist/
 *.spec
 *.aip
+*.txt
+*.cab
+*.ini
