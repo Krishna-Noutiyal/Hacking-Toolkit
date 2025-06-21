@@ -121,7 +121,7 @@ python app.py
 
 - **Operating System**: Windows 10/11 (64-bit)
 - **RAM**: Minimum 2GB
-- **Storage**: 50MB free space
+- **Storage**: 100MB free space
 - **Python**: 3.7+ (if running from source)
 
 ## 📖 User Guide
